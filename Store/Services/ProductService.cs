@@ -10,10 +10,21 @@ public class ProductService
     {
         this.httpClient = httpClient;
     }
-    public async Task<List<Product>> GetProducts()
+    public async Task<List<Product>> GetProducts(string? sortBy = null, string? sortDirection = null)
     {
         List<Product>? products = null;
-        var response = await httpClient.GetAsync("/api/Product");
+        
+        var url = "/api/Product";
+        if (!string.IsNullOrEmpty(sortBy))
+        {
+            url += $"?sortBy={sortBy}";
+            if (!string.IsNullOrEmpty(sortDirection))
+            {
+                url += $"&sortDirection={sortDirection}";
+            }
+        }
+        
+        var response = await httpClient.GetAsync(url);
         if (response.IsSuccessStatusCode)
         {
             var options = new JsonSerializerOptions
