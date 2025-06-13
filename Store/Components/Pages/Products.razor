@@ -21,8 +21,24 @@ else
         <thead>
             <tr>
                 <th>Image</th>
-                <th>Name</th>
-                <th>Price</th>
+                <th>
+                    <button class="btn btn-link p-0 text-start fw-bold text-decoration-none" @onclick="@(() => SortBy("name"))">
+                        Name
+                        @if (currentSortBy == "name")
+                        {
+                            <span>@(currentSortDirection == "asc" ? "▲" : "▼")</span>
+                        }
+                    </button>
+                </th>
+                <th>
+                    <button class="btn btn-link p-0 text-start fw-bold text-decoration-none" @onclick="@(() => SortBy("price"))">
+                        Price
+                        @if (currentSortBy == "price")
+                        {
+                            <span>@(currentSortDirection == "asc" ? "▲" : "▼")</span>
+                        }
+                    </button>
+                </th>
                 <th>Description</th>
             </tr>
         </thead>
@@ -43,13 +59,36 @@ else
 @code {
     private List<Product>? products;
     private string imagePrefix = string.Empty;
+    private string? currentSortBy = "name";
+    private string currentSortDirection = "asc";
 
     protected override async Task OnInitializedAsync()
     {
         // Simulate asynchronous loading to demonstrate streaming rendering
         await Task.Delay(500);
         imagePrefix = Configuration["ImagePrefix"]!;
-        products = await ProductService.GetProducts();
+        await LoadProducts();
     }
 
+    private async Task LoadProducts()
+    {
+        products = await ProductService.GetProducts(currentSortBy, currentSortDirection);
+    }
+
+    private async Task SortBy(string columnName)
+    {
+        if (currentSortBy == columnName)
+        {
+            // Toggle direction if same column
+            currentSortDirection = currentSortDirection == "asc" ? "desc" : "asc";
+        }
+        else
+        {
+            // New column, default to ascending
+            currentSortBy = columnName;
+            currentSortDirection = "asc";
+        }
+
+        await LoadProducts();
+    }
 }

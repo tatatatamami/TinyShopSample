@@ -10,9 +10,38 @@ public static class ProductEndpoints
     {
         var group = routes.MapGroup("/api/Product");
 
-        group.MapGet("/", async (ProductDataContext db) =>
+        group.MapGet("/", async (ProductDataContext db, string? sortBy = null, string? sortDirection = null) =>
         {
-            return await db.Product.ToListAsync();
+            var query = db.Product.AsQueryable();
+            
+            // Apply sorting based on parameters
+            if (!string.IsNullOrEmpty(sortBy))
+            {
+                switch (sortBy.ToLower())
+                {
+                    case "name":
+                        query = sortDirection?.ToLower() == "desc" 
+                            ? query.OrderByDescending(p => p.Name)
+                            : query.OrderBy(p => p.Name);
+                        break;
+                    case "price":
+                        query = sortDirection?.ToLower() == "desc"
+                            ? query.OrderByDescending(p => p.Price)
+                            : query.OrderBy(p => p.Price);
+                        break;
+                    default:
+                        // Default sort by Name if invalid sortBy parameter
+                        query = query.OrderBy(p => p.Name);
+                        break;
+                }
+            }
+            else
+            {
+                // Default sort by Name if no sorting specified
+                query = query.OrderBy(p => p.Name);
+            }
+            
+            return await query.ToListAsync();
         })
         .WithName("GetAllProducts")
         .Produces<List<Product>>(StatusCodes.Status200OK);
