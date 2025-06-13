@@ -13,17 +13,7 @@ public class ProductService
     public async Task<List<Product>> GetProducts()
     {
         List<Product>? products = null;
-        var response = await httpClient.GetAsync("/api/Product");
-        if (response.IsSuccessStatusCode)
-        {
-            var options = new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            };
-
-            products = await response.Content.ReadFromJsonAsync(ProductSerializerContext.Default.ListProduct);
-        }
-
+       
         return products ?? new List<Product>();
     }
     
