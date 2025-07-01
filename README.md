@@ -1,5 +1,3 @@
-![image](https://github.com/user-attachments/assets/b2456d12-2721-493d-b820-c88e509b06fb)
-
 
 # TinyShop on .NET Aspire
 
