@@ -30,7 +30,9 @@ else
             @foreach (var product in products)
             {
                 <tr>
-                    <td><img height="80" width="80" src="https://raw.githubusercontent.com/MicrosoftDocs/mslearn-dotnet-cloudnative/main/dotnet-docker/Products/wwwroot/images/@product.ImageUrl" /></td>
+                    <td>
+                        <img src="@imagePrefix/images/@product.ImageUrl" alt="@product.Name" width="80" height="80" />
+                    </td>
                     <td>@product.Name</td>
                     <td>@product.Price</td>
                     <td>@product.Description</td>
