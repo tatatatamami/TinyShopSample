@@ -20,7 +20,6 @@ else
     <table class="table">
         <thead>
             <tr>
-                <th>Image</th>
                 <th>Name</th>
                 <th>Price</th>
                 <th>Description</th>
@@ -30,9 +29,6 @@ else
             @foreach (var product in products)
             {
                 <tr>
-                    <td>
-                        <img src="@imagePrefix/images/@product.ImageUrl" alt="@product.Name" width="80" height="80" />
-                    </td>
                     <td>@product.Name</td>
                     <td>@product.Price</td>
                     <td>@product.Description</td>
@@ -44,13 +40,11 @@ else
 
 @code {
     private List<Product>? products;
-    private string imagePrefix = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
         // Simulate asynchronous loading to demonstrate streaming rendering
         await Task.Delay(500);
-        imagePrefix = Configuration["ImagePrefix"]!;
         products = await ProductService.GetProducts();
     }
 

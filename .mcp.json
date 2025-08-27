@@ -1,7 +1,7 @@
 {
     "inputs": [
         {
-            "id": "github_pat_demo2",
+            "id": "github_pat_demo_0701_2",
             "description": "GitHub personal access token",
             "type": "promptString",
             "password": true
@@ -20,7 +20,7 @@
                 "ghcr.io/github/github-mcp-server"
             ],
             "env": {
-                "GITHUB_PERSONAL_ACCESS_TOKEN": "${input:github_pat_demo2}"
+                "GITHUB_PERSONAL_ACCESS_TOKEN": "${input:github_pat_demo_0701_2}"
             }
         }
     }
